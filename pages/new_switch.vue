@@ -31,8 +31,8 @@
                 <v-list-tile-title>{{ itm.name }}</v-list-tile-title>
               </v-list-tile-content>
               
-              <button @click="btn_open(itm.code,seq)" class="btn_all">Open All</button>&nbsp;&nbsp;&nbsp;
-              <button @click="btn_close(itm.code,seq)" class="btn_all">Close All</button>
+              <button @click="btn_open(itm.code,seq)" class="btn_all">เปิดทุกดวง</button>&nbsp;&nbsp;&nbsp;
+              <button @click="btn_close(itm.code,seq)" class="btn_all">ปิดทุกดวง</button>
               
               <!-- <v-switch :label="plugs_stage" v-model="plugs" color="#64DD17"></v-switch>
                -->
@@ -48,9 +48,9 @@
               </v-list-tile-avatar> -->
 
               <v-list-tile-content>
-                &nbsp;&nbsp;&nbsp;Switch - {{ idx +1 }}
+                <v-list-tile-title>Switch - {{ idx +1 }}</v-list-tile-title>
               </v-list-tile-content>
-              &nbsp;&nbsp;<button @click="btn_click(itm.code,st,idx)" class="btn">{{ st === '0' ? 'Open' : (st === '1' ? 'Close' : '') }}</button>
+              <button @click="btn_click(itm.code,st,idx)">{{ st === '0' ? 'เปิดไฟ' : (st === '1' ? 'ปิดไฟ' : '') }}</button>
               <!-- <v-switch :label="relay_stage" v-model="relay" color="#64DD17"></v-switch> -->
             <!-- </v-list-tile> -->
         </div>
@@ -75,8 +75,8 @@ export default {
     return {
       
       plug: [
-        { code: '84D8E176994', name: 'Plug-1', loc: '', status: [-1, -1, -1, -1] },
-        { code: '84D8E1766FC', name: 'Plug-2', loc: '', status: [-1, -1, -1, -1] },
+        { code: '84D8E1766FC', name: 'Plug-1', loc: '', status: [-1, -1, -1, -1] },
+        { code: '84D8E176994', name: 'Plug-2', loc: '', status: [-1, -1, -1, -1] },
       ],
       items: [
         { icon: 'far fa-lightbulb', iconClass: 'yellow lighten-3 white--text', title:'Open-Close Switches',
@@ -134,8 +134,7 @@ export default {
 
   created() {
     //this.client = mqtt.connect('wss://mqtt.apps.ccollege.ac.th:8084/mqtt') //เซิฟเวอร์หลัก EMQ
-    // this.client = mqtt.connect('wss://mqtt2.apps.ccollege.ac.th/')  //เซิฟเวอร์สำรอง Mosca
-     this.client = mqtt.connect('wss://ecart-socket.poc.xenex.io')
+    this.client = mqtt.connect('wss://mqtt2.apps.ccollege.ac.th/')  //เซิฟเวอร์สำรอง Mosca
     this.client.on('connect', this.onMqttConnect.bind(this))
     this.client.on('message', this.onMqttMessage.bind(this))
   }, // created
@@ -183,6 +182,7 @@ export default {
            }
       },
        btn_open(code){    
+         
          for (let i = 0 ; i < this.plug.length ; i++){
             if(this.plug[i].code === code){
               for(let l = 0 ; l <= 3; l++){
@@ -232,17 +232,3 @@ export default {
   }, // methods
 }
 </script>
-<style>
-.btn_all{
-   border-radius: 4px;
-  background-color: #FF9933;
-  color: white;
-  padding: 1px  8px;
-}
-.btn{
-  border-radius: 4px;
-  background-color: #FF9933;
-  color: white;
-  padding: 1px  8px;
-}
-</style>

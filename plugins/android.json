@@ -11,10 +11,10 @@
       "WINDOW_BACKGROUND_COLOR": "#1e62ab",
       "PACKAGE_NAME": "tv.tvdirect.wecan"
     },
-    "cordova-plugin-whitelist": {
+    "cordova-plugin-statusbar": {
       "PACKAGE_NAME": "tv.tvdirect.wecan"
     },
-    "cordova-plugin-statusbar": {
+    "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "tv.tvdirect.wecan"
     }
   },

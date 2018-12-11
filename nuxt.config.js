@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   // Headers of the page
   head: {
-    title: 'TVD We Can',
+    title: 'SM Plug',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -24,9 +24,9 @@ module.exports = {
       { name: 'msapplication-TileColor', content: '#da532c' },
     ],
     link: [
-      { rel: 'apple-touch-icon', sizes: '180x180', href: 'apple-touch-icon.png' },
-      { rel: 'icon', type: 'image/png', sizes: '32x32', href: 'favicon-32x32.png' },
-      { rel: 'icon', type: 'image/png', sizes: '16x16', href: 'favicon-16x16.png' },
+      { rel: 'apple-touch-icon', sizes: '180x180', href: '180x180.png' },
+      { rel: 'icon', type: 'image/png', sizes: '32x32', href: '32x32.png' },
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '16x16.png' },
       { rel: 'mask-icon', href: 'safari-pinned-tab.svg', color: '#5bbad5' },
       { name: 'msapplication-TileColor', content: '#da532c' },
       { name: 'theme-color', content: '#ffffff' },

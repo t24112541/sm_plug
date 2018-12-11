@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="1" id="tv.tvdirect.wecan" ios-CFBundleVersion="1" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>TVD WeCan</name>
-    <description>TVD WeCan App</description>
+<widget android-versionCode="1" id="smartplug.app.ccollege.ac.th" ios-CFBundleVersion="1" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Smart Plug</name>
+    <description>Smart Plug App</description>
     <author email="saknarak@gmail.com" href="http://cordova.io">Somsak Sae-Lim</author>
     <content src="index.html" />
     <preference name="DisallowOverscroll" value="true" />
@@ -27,6 +27,6 @@
     <plugin name="cordova-plugin-android-window-background" spec="^1.0.2">
         <variable name="WINDOW_BACKGROUND_COLOR" value="#1e62ab" />
     </plugin>
-    <engine name="android" spec="^7.0.0" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
+    <engine name="android" spec="^7.1.1" />
 </widget>
