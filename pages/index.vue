@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-  <v-app id="inspire">
-    <v-layout row>
-      <v-flex xs12 sm6 offset-sm3>
+    <v-app id="inspire">
+      <v-flex xs12 >
         <v-card>
           <v-list two-line subheader>
             
@@ -14,54 +13,51 @@
               <v-list-tile-content>
                 <v-list-tile-title>{{ item.title }}</v-list-tile-title>
               </v-list-tile-content>
-              <v-switch :label="sw_all_stage" v-model="sw_all" color="#64DD17"></v-switch>
+
+              <button @click="btn_Open_All()" class="cv_btn_open"><i class="fas fa-check-circle fa-2x"></i></button>&nbsp;&nbsp;&nbsp;
+              <button @click="btn_Close_All()" class="cv_btn_close"><i class="fas fa-times-circle fa-2x"></i></button>
+
+              <!-- <v-switch :label="sw_all_stage" v-model="sw_all" color="#64DD17"></v-switch> -->
             </v-list-tile>
 
+            <v-divider></v-divider><br>
    
-   <v-divider></v-divider>
-   
-       <div v-for="(itm,seq) in plug" :key="itm.code" class="plug">
-            <v-list-tile v-for="item in items" :key="item.title">
+            <div v-for="(itm,seq) in plug" :key="itm.code" class="plug">
+                  <v-list-tile v-for="item in items" :key="item.title">
 
-              <v-list-tile-avatar>
-                <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
-              </v-list-tile-avatar>
+                    <v-list-tile-avatar>
+                      <i class="fas fa-plug fa-3x cv_icon" ></i>
+                    </v-list-tile-avatar>
 
-              <v-list-tile-content>
-                <v-list-tile-title>{{ itm.name }}</v-list-tile-title>
-              </v-list-tile-content>
-              
-              <button @click="btn_open(itm.code,seq)" class="btn_all">Open All</button>&nbsp;&nbsp;&nbsp;
-              <button @click="btn_close(itm.code,seq)" class="btn_all">Close All</button>
-              
-              <!-- <v-switch :label="plugs_stage" v-model="plugs" color="#64DD17"></v-switch>
-               -->
-            </v-list-tile>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ itm.name }}</v-list-tile-title>
+                    </v-list-tile-content>
+                    
+                    <button @click="btn_open(itm.code,seq)" fab large dark class="cv_btn"><i class="fas fa-check-circle fa-3x"></i></button>&nbsp;&nbsp;&nbsp;
+                    <button @click="btn_close(itm.code,seq)" fab large dark class="cv_icon"><i class="fas fa-times-circle fa-3x"></i></button>
+
+                  </v-list-tile>
 
 
-        <div class="relay" v-for="(st,idx) in itm.status" :key="idx">
-             
-             <!-- <v-list-tile v-for="item in items" :key="item.title"> -->
+                <v-container fluid grid-list-sm text-xs-center>
+                  <v-layout row wrap>
 
-              <!-- <v-list-tile-avatar>
-                <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
-              </v-list-tile-avatar> -->
+                    <v-flex v-for="(st,idx) in itm.status" :key="idx" xs6>
+                      <v-btn v-if="st == '1'" color="light-green lighten-1" class="white--text" fab large dark @click="btn_click(itm.code,st,idx)">
+                        <i class="fas fa-lightbulb fa-3x" v-if="st == '1'"></i>
+                      </v-btn>
+                      <v-btn v-if="st == '0'" color="grey lighten-2" class="white--text" fab large dark @click="btn_click(itm.code,st,idx)">
+                        <i class="far fa-lightbulb fa-3x" v-if="st == '0'"></i>
+                      </v-btn>
+                    </v-flex>
 
-              <v-list-tile-content>
-                &nbsp;&nbsp;&nbsp;Switch - {{ idx +1 }}
-              </v-list-tile-content>
-              &nbsp;&nbsp;<button @click="btn_click(itm.code,st,idx)" class="btn">{{ st === '0' ? 'Open' : (st === '1' ? 'Close' : '') }}</button>
-              <!-- <v-switch :label="relay_stage" v-model="relay" color="#64DD17"></v-switch> -->
-            <!-- </v-list-tile> -->
-        </div>
-      
-      
-       </div> 
-  
+                  </v-layout>
+                </v-container>
+                <v-divider></v-divider><br>
+              </div>
             </v-list>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-flex>        
   </v-app>
 </div>
 </template>
@@ -75,21 +71,16 @@ export default {
     return {
       
       plug: [
-        { code: '84D8E176994', name: 'Plug-1', loc: '', status: [-1, -1, -1, -1] },
-        { code: '84D8E1766FC', name: 'Plug-2', loc: '', status: [-1, -1, -1, -1] },
+        { code: '84D8E176994', name: 'Plug-1', loc: '', status: [-1,-1,-1,-1] },
+        { code: '84D8E1766FC', name: 'Plug-2', loc: '', status: [-1,-1, -1, -1]  },
       ],
       items: [
-        { icon: 'far fa-lightbulb', iconClass: 'yellow lighten-3 white--text', title:'Open-Close Switches',
+        { icon: 'far fa-lightbulb', iconClass: 'yellow lighten-3 white--text', title:'All Switches',
         },
       ],
       sw_all:"",
       sw_all_stage:"",
       
-      // plugs:"",
-      // plugs_stages:"",
-
-      // relay:"",
-      // relay_stage:"",
 
     }
   }, // data
@@ -105,31 +96,6 @@ export default {
         this.sw_all_stage="false"
       } 
      },
-     
-    //   plugs(newValue){
-    //   if(newValue==true){
-    //     // this.btn_open(code)
-    //     this.plugs_stage="true"
-    //     console.log(code) 
-    //   }
-    //   else if(newValue==false){
-    //     // this.btn_close(code)
-    //     this.plugs_stage="false"
-    //   } 
-    // }, 
-    //  relay(newValue){
-    //   if(newValue==true){
-    //     this.btn_click(code,st,idx)
-    //     this.relay_stage="true" 
-    //   }
-    //   else if(newValue==false){
-    //     this.btn_click(code,st,idx)
-    //     this.relay_stagee="false"
-    //   } 
-    //  },
-   
-   
-   
    },
 
   created() {
@@ -149,28 +115,32 @@ export default {
       btn_click(code,st,idx){
         // var st = parseInt(st)
         // console.log('st',st)
-        // console.log(typeof st)       
-         for (let i = 0 ; i < this.plug.length ; i++){
-        if (this.plug[i].code === code && idx == 0 && st == 0){
-            this.client.publish('op-' + this.plug[i].code, '0=1')}
-        else if(this.plug[i].code === code && idx == 0 && st == 1){
-            this.client.publish('op-' + this.plug[i].code, '0=0')}
+        // console.log(typeof st)  
+        console.log(code)    
+        console.log(st) 
+        console.log(idx) 
 
-         if(this.plug[i].code === code && idx == 1 && st == 0){
-            this.client.publish('op-' + this.plug[i].code, '1=1')}
-        else if(this.plug[i].code === code && idx == 1 && st == 1){
-            this.client.publish('op-' + this.plug[i].code, '1=0')}
-            
-         if(this.plug[i].code === code && idx == 2 && st == 0){
-            this.client.publish('op-' + this.plug[i].code, '2=1')}
-        else if(this.plug[i].code === code && idx == 2 && st == 1){
-            this.client.publish('op-' + this.plug[i].code, '2=0')}
+        for (let i = 0 ; i < this.plug.length ; i++){
+          if (this.plug[i].code === code && idx == 0 && st == 0){
+              this.client.publish('op-' + this.plug[i].code, '0=1')}
+          else if(this.plug[i].code === code && idx == 0 && st == 1){
+              this.client.publish('op-' + this.plug[i].code, '0=0')}
 
-         if(this.plug[i].code === code && idx == 3 && st == 0){
-            this.client.publish('op-' + this.plug[i].code, '3=1')}
-        else if(this.plug[i].code === code && idx == 3 && st == 1){
-            this.client.publish('op-' + this.plug[i].code, '3=0')}
-         }
+          if(this.plug[i].code === code && idx == 1 && st == 0){
+              this.client.publish('op-' + this.plug[i].code, '1=1')}
+          else if(this.plug[i].code === code && idx == 1 && st == 1){
+              this.client.publish('op-' + this.plug[i].code, '1=0')}
+              
+          if(this.plug[i].code === code && idx == 2 && st == 0){
+              this.client.publish('op-' + this.plug[i].code, '2=1')}
+          else if(this.plug[i].code === code && idx == 2 && st == 1){
+              this.client.publish('op-' + this.plug[i].code, '2=0')}
+
+          if(this.plug[i].code === code && idx == 3 && st == 0){
+              this.client.publish('op-' + this.plug[i].code, '3=1')}
+          else if(this.plug[i].code === code && idx == 3 && st == 1){
+              this.client.publish('op-' + this.plug[i].code, '3=0')}
+        }
       },
       btn_close(code){    
          
@@ -234,10 +204,11 @@ export default {
 </script>
 <style>
 .btn_all{
-   border-radius: 4px;
+  border-radius: 4px;
   background-color: #FF9933;
   color: white;
-  padding: 1px  8px;
+  padding: 4px;
+  margin:4px;
 }
 .btn{
   border-radius: 4px;
@@ -245,4 +216,8 @@ export default {
   color: white;
   padding: 1px  8px;
 }
+.cv_btn_open{border-radius: 4px;padding: 4px;margin:4px;color: white;background-color: #a9bd71;}
+.cv_btn_close{border-radius: 4px;padding: 4px;margin:4px;color: white;background-color: #e09a4a;}
+.cv_btn{color: #a9bd71;}
+.cv_icon{color: #e09a4a;}
 </style>

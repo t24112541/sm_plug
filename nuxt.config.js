@@ -61,21 +61,23 @@ module.exports = {
     publicPath: process.env.NODE_ENV !== 'production' ? '/_nuxt/' : 'nuxt/',
     distDir: 'www',
     vendor: [
-      'axios',
       'vuetify',
+      'vue-axios',
     ],
   },
   plugins: [
     '~/plugins/cordova',
     '~/plugins/vuetify',
+    '~/plugins/axios',
   ],
   generate: {
     dir: 'www',
   },
-  modules,
+  modules:[
+    '@nuxtjs/proxy',
+  ],
   proxy: {
-    '/api': process.env.NODE_ENV !== 'production' ? 'http://127.0.0.1:7005' : 'http://api:7005',
-    '/files': process.env.NODE_ENV !== 'production' ? 'http://127.0.0.1:7005' : 'http://api:7005',
+    '/api': 'http://127.0.0.1:7005' ,
     ws: true,
   },
 }

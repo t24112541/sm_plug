@@ -1,45 +1,98 @@
 <template>
-    <div id="app">
-  <v-app id="inspire">
-    <v-toolbar dark color="orange darken-4">
-  <v-toolbar-side-icon></v-toolbar-side-icon>
-      <v-toolbar-title class="title font-weight-light text-xs-center grow">Smart Plug</v-toolbar-title>
-    <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>add</v-icon>
-      </v-btn>
+  <v-app
+    id="inspire"
+  >
+    <v-navigation-drawer
+      v-model="drawer"
+      fixed
+      clipped
+      app
+    >
+      <v-list dense>
+        <v-list-tile v-for="item in items" :key="item.text" @click="">
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              {{ item.text }}
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-subheader class="mt-3 grey--text text--darken-1">SUBSCRIPTIONS</v-subheader>
+        <v-list>
+          <v-list-tile v-for="item in items2" :key="item.text" avatar @click="">
+            <v-list-tile-avatar>
+              <img :src="`https://randomuser.me/api/portraits/men/${item.picture}.jpg`" alt="">
+            </v-list-tile-avatar>
+            <v-list-tile-title v-text="item.text"></v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+        <v-list-tile class="mt-3" @click="">
+          <v-list-tile-action>
+            <v-icon color="grey darken-1">add_circle_outline</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title class="grey--text text--darken-1">Browse Channels</v-list-tile-title>
+        </v-list-tile>
+        <v-list-tile @click="">
+          <v-list-tile-action>
+            <v-icon color="grey darken-1">settings</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title class="grey--text text--darken-1">Manage Subscriptions</v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar
+      color="red"
+      style="color:#fff"
+      dense
+      fixed
+      clipped-left
+      app
+    >
+      <v-toolbar-side-icon style="color:#fff" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon><img style="width:100%" :src="require('@/static/smp.png')"></v-toolbar-side-icon>
+      <v-toolbar-title class="mr-5 align-center">
+        <span class="title">Smart Plug</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-side-icon ><i style="color:#fff" class="fas fa-plus"></i></v-toolbar-side-icon>
     </v-toolbar>
-<v-container>
-   <nuxt/>
-</v-container>
-<v-tabs
-      centered
-      color="orange darken-4"
-      dark
-      icons-and-text>
-      <v-tabs-slider color="yellow"></v-tabs-slider>
-  
-      <v-tab href="#tab-1">
-        หน้าหลัก
-        <v-icon>home</v-icon>
-      </v-tab>
-  
-      <v-tab href="#tab-2">
-        คู่มือ
-        <v-icon>fas fa-book-open</v-icon>
-      </v-tab>
-  
-      <v-tab href="#tab-3">
-        ประวัติ
-        <v-icon>people</v-icon>
-      </v-tab>
-  
-      <v-tab-item
-        v-for="i in 3"
-        :id="'tab-' + i"
-        :key="i">
-      </v-tab-item>
-    </v-tabs>
+    <v-content>
+      <v-container fill-height>
+        <v-layout justify-center align-center>
+          <v-flex shrink>
+            <v-container>
+              <nuxt/>
+            </v-container>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
   </v-app>
-</div>
 </template>
+
+<script>
+  export default {
+    data: () => ({
+      drawer: null,
+      items: [
+        { icon: 'trending_up', text: 'Most Popular' },
+        { icon: 'subscriptions', text: 'Subscriptions' },
+        { icon: 'history', text: 'History' },
+        { icon: 'featured_play_list', text: 'Playlists' },
+        { icon: 'watch_later', text: 'Watch Later' }
+      ],
+      items2: [
+        { picture: 28, text: 'Joseph' },
+        { picture: 38, text: 'Apple' },
+        { picture: 48, text: 'Xbox Ahoy' },
+        { picture: 58, text: 'Nokia' },
+        { picture: 78, text: 'MKBHD' }
+      ]
+    }),
+    props: {
+      source: String
+    }
+  }
+</script>
