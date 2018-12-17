@@ -1,6 +1,6 @@
 
 <template>
-    <v-card>
+    <v-card @keypress.enter="user_add()"> 
        
         <v-card-title
           class="grey lighten-4 py-4 title"
@@ -77,11 +77,11 @@
               </v-layout>
             </v-flex>
             <v-alert
-        v-model="danger"
-        dismissible
-        :type=type_api
-      >{{alt_txt}}
-      </v-alert>
+              v-model="danger"
+              dismissible
+              :type=type_api
+            >{{alt_txt}}
+            </v-alert>
             <v-flex xs12 style="color:red;margin-left:30px" v-if="this.alt==true">ยืนยันรหัสผ่านไม่ถูกต้อง !</v-flex>
            
           </v-layout>
@@ -91,7 +91,6 @@
           <v-btn flat color="red lighten-2" @click="user()"> <i class="fas fa-arrow-circle-left fa-2x"></i> </v-btn>
           <v-spacer></v-spacer>
           <v-btn  color="green lighten-2" class="white--text" @click="user_add()"><i class="fas fa-save fa-2x"></i>&nbsp; ลงทะเบียน</v-btn>
-          <v-btn  color="green lighten-2" class="white--text" @click="test()"><i class="fas fa-save fa-2x"></i>&nbsp; test</v-btn>
 
         </v-card-actions>
         

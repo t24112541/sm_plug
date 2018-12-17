@@ -49,6 +49,9 @@
                       <v-btn v-if="st == '0'" color="grey lighten-2" class="white--text" fab large dark @click="btn_click(itm.code,st,idx)">
                         <i class="far fa-lightbulb fa-3x" v-if="st == '0'"></i>
                       </v-btn>
+                      <v-text-field
+                        v-model="d_name"
+                      ></v-text-field>
                     </v-flex>
 
                   </v-layout>
@@ -71,8 +74,8 @@ export default {
     return {
       
       plug: [
-        { code: '84D8E176994', name: 'Plug-1', loc: '', status: [-1,-1,-1,-1] },
-        { code: '84D8E1766FC', name: 'Plug-2', loc: '', status: [-1,-1, -1, -1]  },
+        { code: '84D8E176994', name: 'Plug-1', loc: '', status: [1,1,1,1] },
+        { code: '84D8E1766FC', name: 'Plug-2', loc: '', status: [-1,-1,-1,-1] },
       ],
       items: [
         { icon: 'far fa-lightbulb', iconClass: 'yellow lighten-3 white--text', title:'All Switches',
@@ -101,7 +104,7 @@ export default {
   created() {
     //this.client = mqtt.connect('wss://mqtt.apps.ccollege.ac.th:8084/mqtt') //เซิฟเวอร์หลัก EMQ
     // this.client = mqtt.connect('wss://mqtt2.apps.ccollege.ac.th/')  //เซิฟเวอร์สำรอง Mosca
-     this.client = mqtt.connect('wss://ecart-socket.poc.xenex.io')
+    this.client = mqtt.connect('wss://ecart-socket.poc.xenex.io')
     this.client.on('connect', this.onMqttConnect.bind(this))
     this.client.on('message', this.onMqttMessage.bind(this))
   }, // created
@@ -112,6 +115,11 @@ export default {
   }, // beforeDestroy
 
   methods: {
+    async load_sp_plug(){
+      let res=await this.$http.get('/sp_plug/sp_plug')
+      // console.log(res.data.datas)
+      this.plug=res.data.datas
+    },
       btn_click(code,st,idx){
         // var st = parseInt(st)
         // console.log('st',st)
@@ -173,6 +181,10 @@ export default {
       }
       },
 
+
+/////////////////////  waitting device  /////////////////////////////
+////////////  select p_code in mysql -> this.plug ///////////////////
+/////////////////////////////////////////////////////////////////////
     onMqttConnect() {
       console.log('connected')
       this.client.subscribe('status', err => err)
@@ -181,6 +193,7 @@ export default {
       }
       
     }, // onMqttConnect
+////////////////////////////////////////////////////////////////////
 
     onMqttMessage(topic, message) {
       if (topic === 'status') {
