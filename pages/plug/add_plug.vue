@@ -70,7 +70,7 @@
           
           <v-btn flat color="red lighten-2" @click="plug()"> <i class="fas fa-arrow-circle-left fa-2x"></i> </v-btn>
           <v-spacer></v-spacer>
-          <v-btn  color="green lighten-2" class="white--text" @click="plug_add()"><i class="fas fa-save fa-2x"></i>&nbsp; ลงทะเบียน</v-btn>
+          <v-btn  color="green lighten-2" class="white--text" @click="plug_add()"><i class="fas fa-save fa-2x"></i>&nbsp; บันทึก</v-btn>
 
         </v-card-actions>
         
@@ -93,6 +93,8 @@
                 p_name:"",
                 p_des_locat:"",
                 pt_id:"",
+                pt_port_count:"",
+                u_id:sessionStorage.getItem('u_id'),
 
                 danger:"",
                 type_api:"",
@@ -108,12 +110,13 @@
         },
         methods:{
            async plug_add(){
-                if(this.p_code!=''){
+                if(this.p_code!='' || this.u_id!=""){
                 let res=await this.$http.post("sp_plug/plug_add",{
                     p_code:this.p_code,
                     p_name:this.p_name,
                     p_des_locat:this.p_des_locat,
                     pt_id:this.pt_id,
+                    u_id:this.u_id,
                 })
                 if(res.data.ok==true){this.danger=true,this.alt_txt=res.data.txt,this.type_api=res.data.alt
                 this.plug()}
@@ -126,7 +129,7 @@
               this.sp_plug_type=res.data.datas
             },
           plug(){
-            this.$router.push({name:""})
+            this.$router.push({name:"plug-shplugs"})
           },
 
         }

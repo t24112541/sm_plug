@@ -1,7 +1,5 @@
 <template>
-  <v-app
-    id="inspire"
-  >
+  <v-app>
    
     <v-toolbar
       color="red"
@@ -11,23 +9,20 @@
       clipped-left
       app
     >
-  
       <v-toolbar-side-icon><img style="width:100%" :src="require('@/static/smp.png')"></v-toolbar-side-icon>
       <v-toolbar-title class="mr-5 align-center">
         <span class="title">Smart Plug</span>
       </v-toolbar-title>
 
     </v-toolbar>
+
     <v-content>
-      <v-container fill-height>
-        <v-layout justify-center align-center>
-          <v-flex shrink>
+
+
             <v-container>
               <nuxt/>
             </v-container>
-          </v-flex>
-        </v-layout>
-      </v-container>
+
     </v-content>
      <v-footer color="red" app>
       <v-spacer></v-spacer>

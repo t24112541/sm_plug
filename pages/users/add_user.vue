@@ -112,6 +112,8 @@
                 u_username:"",
                 u_password:"",
                 u_con_password:"",
+                u_tel:"",
+                u_type:"",
                 danger:"",
                 type_api:"",
                 alt_txt:"",
@@ -129,25 +131,22 @@
         },
         methods:{
            async user_add(){
-            // if(this.u_fullname!='' && this.u_username!=''&& this.u_password!=''&&this.u_tel!='' && this.u_con_password==this.u_password){
+            if(this.u_fullname!='' && this.u_username!=''&& this.u_password!=''&&this.u_tel!='' && this.u_con_password==this.u_password){
               let res=await this.$http.post("sp_user/user_add",{
                 u_fullname:this.u_fullname,
                 u_username:this.u_username,
                 u_password:this.u_password,
                 u_tel:this.u_tel,
+                u_type:"สมาชิก"
 
               })
               if(res.data.ok==true){this.danger=true,this.alt_txt=res.data.txt,this.type_api=res.data.alt
               this.user()}
               else{this.danger=true,this.alt_txt=res.data.txt,this.type_api=res.data.alt}
-            // }else{this.danger=true,this.alt_txt="กรุณากรอกข้อมูลให้ครบ",this.type_api="error"}
-          },
-          async test(){
-            // if(this.u_fullname!='' && this.u_username!=''&& this.u_password!=''&&this.u_tel!='' && this.u_con_password==this.u_password){
-              let res=await this.$http.get("sp_user/un_test")
+            }else{this.danger=true,this.alt_txt="กรุณากรอกข้อมูลให้ครบ",this.type_api="error"}
           },
           user(){
-            this.$router.push({name:""})
+            this.$router.push({name:"index"})
           },
 
         }

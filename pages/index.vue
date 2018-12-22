@@ -1,236 +1,120 @@
 <template>
-  <div id="app">
-    <v-app id="inspire">
-      <v-flex xs12 >
-        <v-card>
-          <v-list two-line subheader>
+ <div >
+  <v-app id="" class="lime lighten-1">
+    <v-content>
+      <v-container @keypress.enter="fnc_login()" >
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4 class="padding-top-mx">
             
-              
-              <v-list-tile v-for="item in items" :key="item.title">
-              <v-list-tile-avatar>
-                <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-              </v-list-tile-content>
+              <v-alert
+                v-model="danger"
+                dismissible
+                :type=type_api
+              >
+                {{alt_txt}}
+              </v-alert>
+              <v-card-text>
+                <center><img :src="require('@/static/smp.png')" class="icon_login"></center>
+                <v-toolbar-title style="text-align:center"><h3>เข้าสู่ระบบ</h3></v-toolbar-title>
+                <v-form  >
+                  <v-text-field :rules="[rules.required]" v-model="username" prepend-icon="person" name="username" label="ชื่อผู้ใช้" type="text"></v-text-field>
+                  <v-text-field :rules="[rules.required]" v-model="password" prepend-icon="lock" name="password" label="รหัสผ่าน" id="password" type="password"></v-text-field>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-flex xs12 sm12 md12 style="text-align:center;">
+                 <v-btn @click="fnc_login()" style="color:#fff;font-size:18px" color="orange darken-2" block>
+                   
+                   <v-spacer></v-spacer>
+                   เข้าสู่ระบบ
+                   <v-spacer></v-spacer>
+                   <v-progress-circular
+                      v-if="loading==true"
+                      v-model="loading"
+                      :size="25"
+                      color="white"
+                      indeterminate
+                    ></v-progress-circular></v-btn>
 
-              <button @click="btn_Open_All()" class="cv_btn_open"><i class="fas fa-check-circle fa-2x"></i></button>&nbsp;&nbsp;&nbsp;
-              <button @click="btn_Close_All()" class="cv_btn_close"><i class="fas fa-times-circle fa-2x"></i></button>
+                <br>
+                
+                 </v-flex>
 
-              <!-- <v-switch :label="sw_all_stage" v-model="sw_all" color="#64DD17"></v-switch> -->
-            </v-list-tile>
+                 
+              </v-card-actions>
+              <center>
+              <v-flex  sm6 xs6 style="text-align:center;">
+                 <v-btn @click="regist()" flat style="color:#fff;font-size:18px"  block>
+                   
+                   <v-spacer></v-spacer>
+                   <u>ลงทะเบียนใช้งาน</u>
+                   <v-spacer></v-spacer>
+                   <v-progress-circular
+                      v-if="loading==true"
+                      v-model="loading"
+                      :size="25"
+                      color="white"
+                      indeterminate
+                    ></v-progress-circular></v-btn>
 
-            <v-divider></v-divider><br>
-   
-            <div v-for="(itm,seq) in plug" :key="itm.code" class="plug">
-                  <v-list-tile v-for="item in items" :key="item.title">
-
-                    <v-list-tile-avatar>
-                      <i class="fas fa-plug fa-3x cv_icon" ></i>
-                    </v-list-tile-avatar>
-
-                    <v-list-tile-content>
-                      <v-list-tile-title>{{ itm.name }}</v-list-tile-title>
-                    </v-list-tile-content>
-                    
-                    <button @click="btn_open(itm.code,seq)" fab large dark class="cv_btn"><i class="fas fa-check-circle fa-3x"></i></button>&nbsp;&nbsp;&nbsp;
-                    <button @click="btn_close(itm.code,seq)" fab large dark class="cv_icon"><i class="fas fa-times-circle fa-3x"></i></button>
-
-                  </v-list-tile>
-
-
-                <v-container fluid grid-list-sm text-xs-center>
-                  <v-layout row wrap>
-
-                    <v-flex v-for="(st,idx) in itm.status" :key="idx" xs6>
-                      <v-btn v-if="st == '1'" color="light-green lighten-1" class="white--text" fab large dark @click="btn_click(itm.code,st,idx)">
-                        <i class="fas fa-lightbulb fa-3x" v-if="st == '1'"></i>
-                      </v-btn>
-                      <v-btn v-if="st == '0'" color="grey lighten-2" class="white--text" fab large dark @click="btn_click(itm.code,st,idx)">
-                        <i class="far fa-lightbulb fa-3x" v-if="st == '0'"></i>
-                      </v-btn>
-                      <v-text-field
-                        v-model="d_name"
-                      ></v-text-field>
-                    </v-flex>
-
-                  </v-layout>
-                </v-container>
-                <v-divider></v-divider><br>
-              </div>
-            </v-list>
-        </v-card>
-      </v-flex>        
+                <br>
+                
+                 </v-flex></center>
+            
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
   </v-app>
 </div>
 </template>
 <script>
-
-
-const mqtt = require('mqtt')
-
 export default {
-  data() {
+  layout:"null",
+  data(){
     return {
-      
-      plug: [
-        { code: '84D8E176994', name: 'Plug-1', loc: '', status: [1,1,1,1] },
-        { code: '84D8E1766FC', name: 'Plug-2', loc: '', status: [-1,-1,-1,-1] },
-      ],
-      items: [
-        { icon: 'far fa-lightbulb', iconClass: 'yellow lighten-3 white--text', title:'All Switches',
-        },
-      ],
-      sw_all:"",
-      sw_all_stage:"",
-      
+      loading:false,
+      username:"",
+      password:"",
 
+      type_api:"",
+      danger:false,
+      alt_txt:"",
+      rules: {required: value => !!value || 'ห้ามว่าง.'}
     }
-  }, // data
-  watch:{
-   
-    sw_all(newValue){
-      if(newValue==true){
-        this.btn_Open_All()
-        this.sw_all_stage="true" 
-      }
-      else if(newValue==false){
-        this.btn_Close_All()
-        this.sw_all_stage="false"
-      } 
-     },
-   },
-
-  created() {
-    //this.client = mqtt.connect('wss://mqtt.apps.ccollege.ac.th:8084/mqtt') //เซิฟเวอร์หลัก EMQ
-    // this.client = mqtt.connect('wss://mqtt2.apps.ccollege.ac.th/')  //เซิฟเวอร์สำรอง Mosca
-    this.client = mqtt.connect('wss://ecart-socket.poc.xenex.io')
-    this.client.on('connect', this.onMqttConnect.bind(this))
-    this.client.on('message', this.onMqttMessage.bind(this))
-  }, // created
-
-  beforeDestroy() {
-    // if (this.client) {this.client.end()}
-    this.client && this.client.end()
-  }, // beforeDestroy
-
-  methods: {
-    async load_sp_plug(){
-      let res=await this.$http.get('/sp_plug/sp_plug')
-      // console.log(res.data.datas)
-      this.plug=res.data.datas
+  },
+  methods:{
+      move(){
+          this.$router.replace({path: "/plug/sh_plugs"})
+      },
+      regist(){
+          this.$router.replace({name: "users-adduser"})
+      },
+    async fnc_login(){
+      if(this.username!="" && this.password!=""){
+        this.loading=true
+        // var MD5 = function(d){result = M(V(Y(X(d),8*d.length)));return result.toLowerCase()};function M(d){for(var _,m="0123456789ABCDEF",f="",r=0;r<d.length;r++)_=d.charCodeAt(r),f+=m.charAt(_>>>4&15)+m.charAt(15&_);return f}function X(d){for(var _=Array(d.length>>2),m=0;m<_.length;m++)_[m]=0;for(m=0;m<8*d.length;m+=8)_[m>>5]|=(255&d.charCodeAt(m/8))<<m%32;return _}function V(d){for(var _="",m=0;m<32*d.length;m+=8)_+=String.fromCharCode(d[m>>5]>>>m%32&255);return _}function Y(d,_){d[_>>5]|=128<<_%32,d[14+(_+64>>>9<<4)]=_;for(var m=1732584193,f=-271733879,r=-1732584194,i=271733878,n=0;n<d.length;n+=16){var h=m,t=f,g=r,e=i;f=md5_ii(f=md5_ii(f=md5_ii(f=md5_ii(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_ff(f=md5_ff(f=md5_ff(f=md5_ff(f,r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+0],7,-680876936),f,r,d[n+1],12,-389564586),m,f,d[n+2],17,606105819),i,m,d[n+3],22,-1044525330),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+4],7,-176418897),f,r,d[n+5],12,1200080426),m,f,d[n+6],17,-1473231341),i,m,d[n+7],22,-45705983),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+8],7,1770035416),f,r,d[n+9],12,-1958414417),m,f,d[n+10],17,-42063),i,m,d[n+11],22,-1990404162),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+12],7,1804603682),f,r,d[n+13],12,-40341101),m,f,d[n+14],17,-1502002290),i,m,d[n+15],22,1236535329),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+1],5,-165796510),f,r,d[n+6],9,-1069501632),m,f,d[n+11],14,643717713),i,m,d[n+0],20,-373897302),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+5],5,-701558691),f,r,d[n+10],9,38016083),m,f,d[n+15],14,-660478335),i,m,d[n+4],20,-405537848),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+9],5,568446438),f,r,d[n+14],9,-1019803690),m,f,d[n+3],14,-187363961),i,m,d[n+8],20,1163531501),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+13],5,-1444681467),f,r,d[n+2],9,-51403784),m,f,d[n+7],14,1735328473),i,m,d[n+12],20,-1926607734),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+5],4,-378558),f,r,d[n+8],11,-2022574463),m,f,d[n+11],16,1839030562),i,m,d[n+14],23,-35309556),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+1],4,-1530992060),f,r,d[n+4],11,1272893353),m,f,d[n+7],16,-155497632),i,m,d[n+10],23,-1094730640),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+13],4,681279174),f,r,d[n+0],11,-358537222),m,f,d[n+3],16,-722521979),i,m,d[n+6],23,76029189),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+9],4,-640364487),f,r,d[n+12],11,-421815835),m,f,d[n+15],16,530742520),i,m,d[n+2],23,-995338651),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+0],6,-198630844),f,r,d[n+7],10,1126891415),m,f,d[n+14],15,-1416354905),i,m,d[n+5],21,-57434055),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+12],6,1700485571),f,r,d[n+3],10,-1894986606),m,f,d[n+10],15,-1051523),i,m,d[n+1],21,-2054922799),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+8],6,1873313359),f,r,d[n+15],10,-30611744),m,f,d[n+6],15,-1560198380),i,m,d[n+13],21,1309151649),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+4],6,-145523070),f,r,d[n+11],10,-1120210379),m,f,d[n+2],15,718787259),i,m,d[n+9],21,-343485551),m=safe_add(m,h),f=safe_add(f,t),r=safe_add(r,g),i=safe_add(i,e)}return Array(m,f,r,i)}function md5_cmn(d,_,m,f,r,i){return safe_add(bit_rol(safe_add(safe_add(_,d),safe_add(f,i)),r),m)}function md5_ff(d,_,m,f,r,i,n){return md5_cmn(_&m|~_&f,d,_,r,i,n)}function md5_gg(d,_,m,f,r,i,n){return md5_cmn(_&f|m&~f,d,_,r,i,n)}function md5_hh(d,_,m,f,r,i,n){return md5_cmn(_^m^f,d,_,r,i,n)}function md5_ii(d,_,m,f,r,i,n){return md5_cmn(m^(_|~f),d,_,r,i,n)}function safe_add(d,_){var m=(65535&d)+(65535&_);return(d>>16)+(_>>16)+(m>>16)<<16|65535&m}function bit_rol(d,_){return d<<_|d>>>32-_}
+        let res= await this.$http.post('login/',{
+          username:this.username,
+          password:this.password
+        })
+        if(res.data){this.loading=false}
+        if(res.data.ok==true){
+            //  console.log(res.data)
+            if(res.data.u_type="สมาชิก"){console.log("if")
+                sessionStorage.setItem("u_id",(res.data.datas.u_id))
+                sessionStorage.setItem("u_fullname",(res.data.datas.u_fullname))
+                sessionStorage.setItem("u_username",(res.data.datas.u_username))
+                sessionStorage.setItem("u_password",(res.data.datas.u_password))
+                sessionStorage.setItem("u_type",(res.data.datas.u_type))
+                // this.$router.push({path: "/new_switch",})
+                 this.$router.push({path: "/plug/sh_plugs"})
+                
+            }
+        }else{this.type_api="error",this.danger=true,this.alt_txt=res.data.message}
+      }else{this.type_api="error",this.danger=true,this.alt_txt="กรุณากรอกข้อมูล"}
     },
-      btn_click(code,st,idx){
-        // var st = parseInt(st)
-        // console.log('st',st)
-        // console.log(typeof st)  
-        console.log(code)    
-        console.log(st) 
-        console.log(idx) 
-
-        for (let i = 0 ; i < this.plug.length ; i++){
-          if (this.plug[i].code === code && idx == 0 && st == 0){
-              this.client.publish('op-' + this.plug[i].code, '0=1')}
-          else if(this.plug[i].code === code && idx == 0 && st == 1){
-              this.client.publish('op-' + this.plug[i].code, '0=0')}
-
-          if(this.plug[i].code === code && idx == 1 && st == 0){
-              this.client.publish('op-' + this.plug[i].code, '1=1')}
-          else if(this.plug[i].code === code && idx == 1 && st == 1){
-              this.client.publish('op-' + this.plug[i].code, '1=0')}
-              
-          if(this.plug[i].code === code && idx == 2 && st == 0){
-              this.client.publish('op-' + this.plug[i].code, '2=1')}
-          else if(this.plug[i].code === code && idx == 2 && st == 1){
-              this.client.publish('op-' + this.plug[i].code, '2=0')}
-
-          if(this.plug[i].code === code && idx == 3 && st == 0){
-              this.client.publish('op-' + this.plug[i].code, '3=1')}
-          else if(this.plug[i].code === code && idx == 3 && st == 1){
-              this.client.publish('op-' + this.plug[i].code, '3=0')}
-        }
-      },
-      btn_close(code){    
-         
-         for (let i = 0 ; i < this.plug.length ; i++){
-            if(this.plug[i].code === code){
-              for(let l = 0 ; l <= 3; l++){
-              this.client.publish('op-' + this.plug[i].code, l+'=0')
-              }
-            }
-           }
-      },
-       btn_open(code){    
-         for (let i = 0 ; i < this.plug.length ; i++){
-            if(this.plug[i].code === code){
-              for(let l = 0 ; l <= 3; l++){
-              this.client.publish('op-' + this.plug[i].code, l+'=1')
-              }
-            }
-           }
-      },
-      btn_Open_All(){    
-      for (let i = 0; i < this.plug.length; i++) {
-        this.client.publish('op-' + this.plug[i].code, 'ALL1')
-      }        
-      },
-      btn_Close_All(){    
-         
-         for (let i = 0; i < this.plug.length; i++) {
-        this.client.publish('op-' + this.plug[i].code, 'ALL0')
-      }
-      },
-
-
-/////////////////////  waitting device  /////////////////////////////
-////////////  select p_code in mysql -> this.plug ///////////////////
-/////////////////////////////////////////////////////////////////////
-    onMqttConnect() {
-      console.log('connected')
-      this.client.subscribe('status', err => err)
-      for (let i = 0; i < this.plug.length; i++) {
-        this.client.publish('op-' + this.plug[i].code, 'status')
-      }
-      
-    }, // onMqttConnect
-////////////////////////////////////////////////////////////////////
-
-    onMqttMessage(topic, message) {
-      if (topic === 'status') {
-        // message is Buffer
-        console.log('GOT:', message.toString())
-        // 0002-0100
-        let msg = message.toString()
-        let code = msg.substr(0, 11) // '0002'
-        let status = msg.substr(12, 4).split('') // ['0', '1', '0', '0']
-        console.log('code=', code, 'status', status)
-        for (let i = 0; i < this.plug.length; i++) {
-          if (this.plug[i].code === code) {
-            this.plug[i].status = status
-            // TODO: ???
-          }
-        }
-      }
-    }, // onMqttMessage
-  }, // methods
+  },
 }
 </script>
-<style>
-.btn_all{
-  border-radius: 4px;
-  background-color: #FF9933;
-  color: white;
-  padding: 4px;
-  margin:4px;
-}
-.btn{
-  border-radius: 4px;
-  background-color: #FF9933;
-  color: white;
-  padding: 1px  8px;
-}
-.cv_btn_open{border-radius: 4px;padding: 4px;margin:4px;color: white;background-color: #a9bd71;}
-.cv_btn_close{border-radius: 4px;padding: 4px;margin:4px;color: white;background-color: #e09a4a;}
-.cv_btn{color: #a9bd71;}
-.cv_icon{color: #e09a4a;}
-</style>
+
