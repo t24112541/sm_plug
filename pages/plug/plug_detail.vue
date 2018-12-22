@@ -198,6 +198,7 @@ export default {
       type_api:"",
       alt_txt:"",
       alt:false,
+      plg_status:false,
     }
   }, // data
   watch:{
@@ -414,7 +415,7 @@ export default {
       
         this.client.publish('op-' + this.plug.code, 'status')
       
-      
+      console.log(this.client.publish('op-' + this.plug.code, 'status'))
     }, // onMqttConnect
 ////////////////////////////////////////////////////////////////////
 
