@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env  PORT=9007 nuxt",
+    "dev": "cross-env  PORT=9007 HOST=0.0.0.0 nuxt",
     "start": "cross-env HOST=0.0.0.0 PORT=9007 nuxt start",
     "build": "cross-env NODE_ENV=production nuxt build && npm run replace",
     "replace": "cross-env replace -r '/nuxt/' 'nuxt/' www",
