@@ -78,7 +78,7 @@ module.exports = {
     '@nuxtjs/proxy',
   ],
   proxy: {
-    '/api': 'http://127.0.0.1:7005' ,
+    '/api': process.env.API_URL || 'http://127.0.0.1:7005' ,
     ws: true,
   },
 }
